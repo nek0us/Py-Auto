@@ -1,7 +1,7 @@
 #coding=utf-8
 
 #python path环境变量名
-py_path = 'py3'
+py_path = ''
 
 #是否启用git拉取更新本地项目  Faslse/True
 git_status = False
