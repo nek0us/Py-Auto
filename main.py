@@ -37,21 +37,51 @@ def git_pull(qgit):
 
 
 def get_list():
-    run_list = []
+    arg = []
     begin("准备读取项目")
+
     try:
         with open("run_list.txt","r") as f:
             for line in f.readlines():
                 line = line.strip('\n')
-                qpy.put(line)
-                patq = r".\:([\\a-zA-Z0-9-_\.\s]+\\)+"
-                resq = re.match(patq,line).group()
-                qgit.put(resq)
+                
+                pat_git = r".\:([\\a-zA-Z0-9-_\.\s]+\\)+"
+                res_git = re.match(pat_git,line).group()
+                qgit.put(res_git)
+
+                pat_arg = r"\t[0-9a-zA-Z-_' '\\/]+"
+                res_arg = re.search(pat_arg,line)
+
+                pat = r"\.py"
+                res = re.split(pat,line)
+
+                if res_arg:
+                    res_arg = res_arg.group()
+                    res = ''.join(res[:1]) + '.py" ' + ''.join(res_arg[1:])
+                else:
+                    res = ''.join(res[:1]) + '.py" '
+
+                
+                
+                qpy.put(res)
+                
+
+                #pat_qpy = r".\:([\\\w-.\s]+\\)+([\w\s-.])+\.py"
+                #res_qpy = re.search(pat_qpy,line)
+                #logger.info(res_qpy)
+                #res_qpy = res_qpy.group()
+                #logger.info(res_qpy)
+                #qpy.put(res_qpy)
+
+
+                
                 #pat = r"(\\[a-zA-Z0-9-_\.\s]+\\)+"
                 #res = re.findall(pat,line)
                 #res = res[-1:]
                 #res = ''.join(res)[1:-1]
                 #run_list.append(res)
+
+        return arg
                 
 
     except:
@@ -75,11 +105,10 @@ def git_update():
 
 def run_object(qpy):
     try:
-
         while not qpy.empty():
             py_name = qpy.get()
-            logger.info("准备运行"+py_name)
-            py_cmd = 'cmd/c start ' + py_path + ' "' + ''.join(py_name) + '"'
+            logger.info("准备运行\""+py_name)
+            py_cmd = r'cmd/c start ' + py_path + ' "' + ''.join(py_name)
             r = os.popen(py_cmd)
             r.read()
             bl = r.close()
