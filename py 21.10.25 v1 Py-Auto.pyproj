@@ -28,6 +28,7 @@
     <Compile Include="tools.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="requirements.txt" />
     <Content Include="run_list.txt" />
   </ItemGroup>
   <ItemGroup>

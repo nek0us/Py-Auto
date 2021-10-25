@@ -94,7 +94,7 @@ def git_update():
     fenge()
     begin("准备更新项目")
     threads = []
-    for x in range(0,2):
+    for x in range(0,config.thd):
         t = threading.Thread(target=git_pull,args=(qgit,))
         threads.append(t)
     for t in threads:
@@ -122,7 +122,7 @@ def run_py():
     fenge()
     begin("准备运行项目")
     threads = []
-    for x in range(0,2):
+    for x in range(0,config.thd):
         t = threading.Thread(target=run_object,args=(qpy,))
         threads.append(t)
     for t in threads:
@@ -148,6 +148,9 @@ def check():
         config.run_time = "00:00:00"
     else:
         logger.info("预设运行时间为每日"+config.run_time)
+    if not config.thd:
+        logger.info("多线程数量未填写，默认使用 2")
+        config.thd = 2
     if chk_err:
         sys.exit(1)
 
